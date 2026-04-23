@@ -222,7 +222,7 @@ DELIVERY_FIELDS = [
 ]
 
 
-def process_files(input_dir: str, output_dir: str, single: str = None):
+def process_files(input_dir: str, output_dir: str, single: str):
     input_path  = Path(input_dir)
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
