@@ -60,8 +60,8 @@ def build_match_features(matches: pd.DataFrame, deliveries: pd.DataFrame) -> pd.
 
     #Did toss winner choose to bat?
     df["toss_winner_batted"] = (
-        ((df["toss_decision"] == "bat") & (df["toss_winner"] == df["innings_1_team"])) |
-        ((df["toss_decision"] == "field") & (df["toss_winner"] == df["innings_2_team"]))
+        ((df["toss_decision"] == "bat") & (df["toss_winner"] == df["innings1_team"])) |
+        ((df["toss_decision"] == "field") & (df["toss_winner"] == df["innings2_team"]))
     ).astype(int)
 
     #Required Run Rate
@@ -175,7 +175,7 @@ def build_match_features(matches: pd.DataFrame, deliveries: pd.DataFrame) -> pd.
             played = venue_past[(venue_past["team1"] == team) | (venue_past["team2"] == team)]
             if(len(played) == 0):
                 return 0.5
-            wins = played[(played["team1"] == team) & (played["team1_won"] == 1)].sum() + played[(played["team2"] == team) & (played["team1_won"] == 0)].sum()
+            wins = ((played["team1"] == team) & (played["team1_won"] == 1)).sum() + ((played["team2"] == team) & (played["team1_won"] == 0)).sum()
             return wins / len(played)
 
         venue_records.append({
@@ -184,31 +184,31 @@ def build_match_features(matches: pd.DataFrame, deliveries: pd.DataFrame) -> pd.
             "team2_venue_win_rate": team_venue_winrate(row["team2"])
         })
 
-        venue_df = pd.DataFrame(venue_records)
-        df = df.merge(venue_df, how="left", on="match_id")
+    venue_df = pd.DataFrame(venue_records)
+    df = df.merge(venue_df, how="left", on="match_id")
 
         # Recent form: last 5 match win rate
-        form_records = []
-        for idx, row in df.iterrows():
-            past = df.iloc[:idx]
-            
-            def recent_form(team, n=5):
-                team_games = past[(past["team1"] == team) | (past["team2"] == team)]
-                if len(team_games) == 0:
-                    return 0.5
-                wins = ((team_games["team1"] == team) & (team_games["team1_won"] == 1)).sum() + ((team_games["team2"] == team) & (team_games["team1_won"] == 0)).sum()
-                return wins / len(team_games)
+    form_records = []
+    for idx, row in df.iterrows():
+        past = df.iloc[:idx]
+        
+        def recent_form(team, n=5):
+            team_games = past[(past["team1"] == team) | (past["team2"] == team)]
+            if len(team_games) == 0:
+                return 0.5
+            wins = ((team_games["team1"] == team) & (team_games["team1_won"] == 1)).sum() + ((team_games["team2"] == team) & (team_games["team1_won"] == 0)).sum()
+            return wins / len(team_games)
 
-            form_records.append({
-                "match_id": row["match_id"],
-                "team1_recent_form": recent_form(row["team1"]),
-                "team2_recent_form": recent_form(row["team2"])
-            })
+        form_records.append({
+            "match_id": row["match_id"],
+            "team1_recent_form": recent_form(row["team1"]),
+            "team2_recent_form": recent_form(row["team2"])
+        })
 
-        form_df = pd.DataFrame(form_records)
-        df = df.merge(form_df, how="left", on="match_id")
+    form_df = pd.DataFrame(form_records)
+    df = df.merge(form_df, how="left", on="match_id")
 
-        df["season_year"] = df["season"].str.extract(r"(\d{4})").astype(float)
+    df["season_year"] = df["season"].str.extract(r"(\d{4})").astype(float)
 
     return df
 
@@ -219,13 +219,16 @@ def build_batting_features(deliveries: pd.DataFrame) -> pd.DataFrame:
 
     legal = deliveries[deliveries["wides"] == 0].copy()
 
-    agg = legal.groupby(["match_id", "innings", "batting_team", "bowling_team"]).agg(
+    agg = legal.groupby(["match_id", "innings", "batting_team", "batter"]).agg(
         runs=("batter_runs", "sum"),
         balls_faced=("batter_runs", "count"),
         fours=("batter_runs", lambda x: (x == 4).sum()),
         sixes=("batter_runs", lambda x: (x == 6).sum()),
         dot_balls=("batter_runs", lambda x: (x == 0).sum()),).reset_index()
 
+    # for col in ["runs", "balls_faced", "fours", "sixes"]:
+    #     agg[col] = pd.to_numeric(agg[col], errors="coerce")
+    
     agg["strike_rate"] = safe_div((agg["runs"].values * 100), agg["balls_faced"].values)
     agg["boundary_pct"] = safe_div((agg["fours"] + agg["sixes"]).values * 100, agg["balls_faced"].values)
 
