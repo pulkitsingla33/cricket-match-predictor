@@ -9,6 +9,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.prompt import Prompt, IntPrompt
 from rich import print as rprint
 from pathlib import Path
+from par_score import get_venue_batting_stats
 
 console = Console()
 
@@ -154,20 +155,66 @@ def load_latest_stats(team1, team2, venue):
         'death_wkts_diff': t1_stats['avg_death_wkts'] - t2_stats['avg_death_wkts'],
     }
     
+    return pd.DataFrame([features]), t1_stats, t2_stats
+
+
+def build_score_features(batting_team, bowling_team, venue, t_bat_stats, t_bowl_stats, 
+                         toss_bat_first, is_home_bat, is_home_bowl, match_features_df):
+    """
+    Build the feature row for the score prediction model.
+    Features must match train_score_model.py's expected columns.
+    """
+    features = {
+        'innings1_team': batting_team,
+        'innings2_team': bowling_team,
+        'venue': venue,
+        # Batting team strength
+        'bat_team_sr': t_bat_stats['bat_sr'],
+        'bat_team_avg': t_bat_stats['bat_avg'],
+        # Bowling team strength (team fielding first)
+        'bowl_team_econ': t_bowl_stats['bowl_econ'],
+        'bowl_team_wkts': t_bowl_stats['bowl_wkts'],
+        # Historical rolling averages (use whichever team's stats apply)
+        'team1_avg_pp_runs': t_bat_stats['avg_pp_runs'],
+        'team2_avg_pp_runs': t_bowl_stats['avg_pp_runs'],
+        'team1_avg_death_wkts': t_bat_stats['avg_death_wkts'],
+        'team2_avg_death_wkts': t_bowl_stats['avg_death_wkts'],
+        'team1_win_after_batting_first': t_bat_stats['bat_first_wr'],
+        'team2_win_after_batting_first': t_bowl_stats['bat_first_wr'],
+        # Context
+        'toss_bat_first': toss_bat_first,
+        'is_home_team1': is_home_bat,
+        'is_home_team2': is_home_bowl,
+        'season_progress': 0.5,
+    }
     return pd.DataFrame([features])
+
 
 def main():
     console.clear()
-    rprint(Panel.fit("[bold green]🏏 IPL Match Outcome Predictor [white]Ensemble Edition[/white] [/bold green]", subtitle="v2.0"))
+    rprint(Panel.fit(
+        "[bold green]🏏 IPL Match Predictor [white]Ensemble Edition[/white] [/bold green]",
+        subtitle="v3.0 — Winner · Score · Par Score"
+    ))
     
-    # Load Model
+    # Load Models
+    data_path = Path(__file__).parent
     with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), transient=True) as progress:
-        progress.add_task(description="Loading model pipeline...", total=None)
-        model = joblib.load("ipl_ensemble_predictor.joblib")
+        progress.add_task(description="Loading model pipelines...", total=None)
+        winner_model = joblib.load(data_path / "ipl_ensemble_predictor.joblib")
+        
+        # Score model (optional — may not be trained yet)
+        score_model = None
+        score_meta = None
+        try:
+            score_model = joblib.load(data_path / "ipl_score_predictor.joblib")
+            score_meta = joblib.load(data_path / "ipl_score_predictor_meta.joblib")
+        except FileNotFoundError:
+            pass
         time.sleep(1)
         
     # Get available list for selection
-    df = pd.read_csv("features_match_level.csv")
+    df = pd.read_csv(data_path / "features_match_level.csv")
     teams = sorted(df['team1'].unique().tolist())
     venues = sorted(df['venue'].unique().tolist())
     
@@ -187,28 +234,65 @@ def main():
         table.add_row(*row)
     console.print(table)
     
-    # Inputs
+    # ── Inputs ────────────────────────────────────────────
     t1 = Prompt.ask("\nChoose [bold red]Team 1[/bold red]", choices=teams)
     t2 = Prompt.ask("Choose [bold blue]Team 2[/bold blue]", choices=[t for t in teams if t != t1])
     venue = Prompt.ask("Select [bold yellow]Venue[/bold yellow]", choices=venues, default=venues[0])
     
-    # Predictions
+    # Ask who bats first
+    bat_first = Prompt.ask(
+        "\nWho [bold green]bats first[/bold green]?",
+        choices=[t1, t2],
+        default=t1
+    )
+    bowl_first = t2 if bat_first == t1 else t1
+    
+    # ── Predictions ───────────────────────────────────────
     with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), transient=True) as progress:
-        progress.add_task(description=f"Analyzing match statistics for {t1} vs {t2}...", total=None)
-        input_data = load_latest_stats(t1, t2, venue)
-        prob = model.predict_proba(input_data)[0]
-        winner_idx = model.predict(input_data)[0]
+        progress.add_task(description=f"Analyzing {t1} vs {t2} at {venue}...", total=None)
+        input_data, t1_stats, t2_stats = load_latest_stats(t1, t2, venue)
+        
+        # Winner prediction
+        prob = winner_model.predict_proba(input_data)[0]
+        winner_idx = winner_model.predict(input_data)[0]
+        
+        # Score prediction
+        predicted_score = None
+        score_range = None
+        if score_model is not None:
+            bat_stats = t1_stats if bat_first == t1 else t2_stats
+            bowl_stats = t2_stats if bat_first == t1 else t1_stats
+            
+            is_home_bat = int(input_data.iloc[0]['is_home_team1']) if bat_first == t1 else int(input_data.iloc[0]['is_home_team2'])
+            is_home_bowl = int(input_data.iloc[0]['is_home_team2']) if bat_first == t1 else int(input_data.iloc[0]['is_home_team1'])
+            
+            score_features = build_score_features(
+                batting_team=bat_first,
+                bowling_team=bowl_first,
+                venue=venue,
+                t_bat_stats=bat_stats,
+                t_bowl_stats=bowl_stats,
+                toss_bat_first=1,  # they chose to bat
+                is_home_bat=is_home_bat,
+                is_home_bowl=is_home_bowl,
+                match_features_df=df,
+            )
+            predicted_score = score_model.predict(score_features)[0]
+            residual_std = score_meta.get('residual_std', 20.0) if score_meta else 20.0
+            score_range = (int(round(predicted_score - residual_std)), 
+                          int(round(predicted_score + residual_std)))
+        
+        # Par score
+        venue_stats = get_venue_batting_stats(venue)
+        
         time.sleep(2)
     
-    # Display Result
-    t1_prob = prob[1] * 100
-    t2_prob = prob[0] * 100
-    
-    winner = t1 if winner_idx == 1 else t2
-    winner_color = "red" if winner == t1 else "blue"
-    win_prob = t1_prob if winner == t1 else t2_prob
-    
+    # ══════════════════════════════════════════════════════
+    #  DISPLAY RESULTS
+    # ══════════════════════════════════════════════════════
     console.print("\n")
+    
+    # ── 1. Match Analysis Breakdown ───────────────────────
     res_table = Table(title="Match Analysis Breakdown")
     res_table.add_column("Factor", style="cyan")
     res_table.add_column(t1, style="red", justify="center")
@@ -226,19 +310,70 @@ def main():
     
     console.print(res_table)
     
+    # ── 2. Winner Prediction ──────────────────────────────
+    t1_prob = prob[1] * 100
+    t2_prob = prob[0] * 100
+    
+    winner = t1 if winner_idx == 1 else t2
+    winner_color = "red" if winner == t1 else "blue"
+    win_prob = t1_prob if winner == t1 else t2_prob
+    
     win_panel = Panel(
         f"[bold yellow]PREDICTED WINNER:[/bold yellow]\n\n"
         f"[bold {winner_color} underline]{winner}[/bold {winner_color} underline]\n"
-        f"[white]Probability: {win_prob:.1f}%[/white]",
+        f"[white]Win Probability: {win_prob:.1f}%[/white]",
         expand=False,
         border_style="yellow",
         padding=(1, 5)
     )
-    
     console.print(win_panel, justify="center")
     
-    # Final Graphic
-    rprint(f"\n [dim]Prediction completed using a Stacking Ensemble of RF, HGB, and ET models.[/dim]")
+    # ── 3. First Innings Score Prediction ─────────────────
+    if predicted_score is not None:
+        score_int = int(round(predicted_score))
+        
+        # Compare with par score
+        par = venue_stats['par_score']
+        if score_int > par:
+            score_verdict = f"[green]Above par ({par}) — favors {bat_first}[/green]"
+        elif score_int < par:
+            score_verdict = f"[red]Below par ({par}) — favors {bowl_first}[/red]"
+        else:
+            score_verdict = f"[yellow]Right at par ({par}) — evenly balanced[/yellow]"
+        
+        score_panel = Panel(
+            f"[bold cyan]PREDICTED 1ST INNINGS SCORE:[/bold cyan]\n\n"
+            f"[bold white]{bat_first}[/bold white] batting first\n"
+            f"[bold green]{score_int}[/bold green] [dim]({score_range[0]}–{score_range[1]} range)[/dim]\n\n"
+            f"{score_verdict}",
+            expand=False,
+            border_style="cyan",
+            padding=(1, 5)
+        )
+        console.print(score_panel, justify="center")
+    else:
+        rprint("\n [dim]⚠ Score prediction model not found. Run train_score_model.py first.[/dim]")
+    
+    # ── 4. Par Score & Venue Insights ─────────────────────
+    par_table = Table(title=f"Venue Insights — {venue}")
+    par_table.add_column("Metric", style="cyan")
+    par_table.add_column("Value", style="white", justify="center")
+    
+    par_note = "" if venue_stats['is_venue_specific'] else " [dim](global avg)[/dim]"
+    par_table.add_row("Par Score", f"[bold]{venue_stats['par_score']}[/bold]{par_note}")
+    par_table.add_row("Avg 1st Innings", f"{venue_stats['avg_first_innings']}")
+    if venue_stats['avg_second_innings']:
+        par_table.add_row("Avg 2nd Innings", f"{venue_stats['avg_second_innings']}")
+    par_table.add_row("Bat-First Win %", f"{venue_stats['bat_first_win_pct']:.1f}%")
+    par_table.add_row("Matches at Venue", f"{venue_stats['venue_matches']}")
+    
+    if not venue_stats['is_venue_specific']:
+        par_table.add_row("", "[dim italic]< 10 matches — using global averages[/dim italic]")
+    
+    console.print(par_table)
+    
+    # Final note
+    rprint(f"\n [dim]Prediction completed using Stacking Ensemble models (RF + HGB + ET).[/dim]")
 
 if __name__ == "__main__":
     main()
