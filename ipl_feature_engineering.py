@@ -18,6 +18,27 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
+# ─────────────────────────────────────────────
+# HOME CITY MAPPING (for home-advantage feature)
+# ─────────────────────────────────────────────
+TEAM_HOME_CITIES = {
+    "Mumbai Indians": ["Mumbai"],
+    "Chennai Super Kings": ["Chennai"],
+    "Royal Challengers Bengaluru": ["Bangalore", "Bengaluru"],
+    "Kolkata Knight Riders": ["Kolkata"],
+    "Delhi Capitals": ["Delhi"],
+    "Punjab Kings": ["Chandigarh", "Mohali", "Mullanpur"],
+    "Rajasthan Royals": ["Jaipur"],
+    "Sunrisers Hyderabad": ["Hyderabad"],
+    "Lucknow Super Giants": ["Lucknow"],
+    "Gujarat Titans": ["Ahmedabad"],
+    "Deccan Chargers": ["Hyderabad"],
+    "Kochi Tuskers Kerala": ["Kochi"],
+    "Pune Warriors": ["Pune"],
+    "Rising Pune Supergiants": ["Pune"],
+    "Gujarat Lions": ["Rajkot", "Ahmedabad"],
+}
+
 #LOAD
 def load_data(matches_path: str, deliveries_path: str):
     matches = pd.read_csv(matches_path)
@@ -187,13 +208,13 @@ def build_match_features(matches: pd.DataFrame, deliveries: pd.DataFrame) -> pd.
     venue_df = pd.DataFrame(venue_records)
     df = df.merge(venue_df, how="left", on="match_id")
 
-        # Recent form: last 5 match win rate
+    # Recent form: last 5 match win rate (FIXED: now uses .tail(n) instead of all past)
     form_records = []
     for idx, row in df.iterrows():
         past = df.iloc[:idx]
         
         def recent_form(team, n=5):
-            team_games = past[(past["team1"] == team) | (past["team2"] == team)]
+            team_games = past[(past["team1"] == team) | (past["team2"] == team)].tail(n)
             if len(team_games) == 0:
                 return 0.5
             wins = ((team_games["team1"] == team) & (team_games["team1_won"] == 1)).sum() + ((team_games["team2"] == team) & (team_games["team1_won"] == 0)).sum()
@@ -208,7 +229,93 @@ def build_match_features(matches: pd.DataFrame, deliveries: pd.DataFrame) -> pd.
     form_df = pd.DataFrame(form_records)
     df = df.merge(form_df, how="left", on="match_id")
 
+    # ── NEW FEATURES ─────────────────────────────────────
+
+    # Batting-first win rate (lookahead-safe)
+    bat_first_records = []
+    for idx, row in df.iterrows():
+        past = df.iloc[:idx]
+
+        def bat_first_winrate(team, n=10):
+            """Win rate when this team batted first (last n such matches)."""
+            # team batted first = team was innings1_team
+            bat_first = past[past["innings1_team"] == team].tail(n)
+            if len(bat_first) == 0:
+                return 0.5
+            wins = ((bat_first["team1"] == team) & (bat_first["team1_won"] == 1)).sum() + \
+                   ((bat_first["team2"] == team) & (bat_first["team1_won"] == 0)).sum()
+            return wins / len(bat_first)
+
+        bat_first_records.append({
+            "match_id": row["match_id"],
+            "team1_win_after_batting_first": bat_first_winrate(row["team1"]),
+            "team2_win_after_batting_first": bat_first_winrate(row["team2"]),
+        })
+
+    bf_df = pd.DataFrame(bat_first_records)
+    df = df.merge(bf_df, how="left", on="match_id")
+
+    # Rolling average powerplay runs scored (last 10 matches, lookahead-safe)
+    pp_avg_records = []
+    for idx, row in df.iterrows():
+        past = df.iloc[:idx]
+
+        def avg_pp_runs(team, n=10):
+            # When batting (innings1_team), use pp_runs_inn1; when innings2_team, pp_runs_inn2
+            as_inn1 = past[past["innings1_team"] == team][["pp_runs_inn1"]].rename(columns={"pp_runs_inn1": "pp"})
+            as_inn2 = past[past["innings2_team"] == team][["pp_runs_inn2"]].rename(columns={"pp_runs_inn2": "pp"})
+            combined = pd.concat([as_inn1, as_inn2]).dropna().tail(n)
+            return combined["pp"].mean() if len(combined) > 0 else 45.0  # default ~45 runs in PP
+
+        pp_avg_records.append({
+            "match_id": row["match_id"],
+            "team1_avg_pp_runs": avg_pp_runs(row["team1"]),
+            "team2_avg_pp_runs": avg_pp_runs(row["team2"]),
+        })
+
+    pp_avg_df = pd.DataFrame(pp_avg_records)
+    df = df.merge(pp_avg_df, how="left", on="match_id")
+
+    # Rolling average death-over wickets taken while bowling (last 10 matches)
+    death_wkt_records = []
+    for idx, row in df.iterrows():
+        past = df.iloc[:idx]
+
+        def avg_death_wkts(team, n=10):
+            # When bowling: if team is innings1_team, death wickets taken = death_wickets_inn2 of that match? No.
+            # death_wickets_inn1 = wickets fallen in innings 1 = bowling team's wickets
+            # If team bowled in innings 1, team is NOT innings1_team (they are bowling_team = innings2_team-ish)
+            # Actually: innings1 bowling team = innings2_team (the team that fields first)
+            # So team's bowling death wickets = death_wickets_inn1 when team == innings2_team (they bowled in inn1)
+            #                                 + death_wickets_inn2 when team == innings1_team (they bowled in inn2)
+            as_bowl_inn1 = past[past["innings2_team"] == team][["death_wickets_inn1"]].rename(columns={"death_wickets_inn1": "dw"})
+            as_bowl_inn2 = past[past["innings1_team"] == team][["death_wickets_inn2"]].rename(columns={"death_wickets_inn2": "dw"})
+            combined = pd.concat([as_bowl_inn1, as_bowl_inn2]).dropna().tail(n)
+            return combined["dw"].mean() if len(combined) > 0 else 2.0  # default ~2 death wickets
+
+        death_wkt_records.append({
+            "match_id": row["match_id"],
+            "team1_avg_death_wkts": avg_death_wkts(row["team1"]),
+            "team2_avg_death_wkts": avg_death_wkts(row["team2"]),
+        })
+
+    dw_df = pd.DataFrame(death_wkt_records)
+    df = df.merge(dw_df, how="left", on="match_id")
+
+    # Home advantage: is team1 playing in their home city?
+    def is_home(team, city):
+        if pd.isna(city) or team not in TEAM_HOME_CITIES:
+            return 0
+        return int(city in TEAM_HOME_CITIES[team])
+
+    df["is_home_team1"] = df.apply(lambda r: is_home(r["team1"], r["city"]), axis=1)
+    df["is_home_team2"] = df.apply(lambda r: is_home(r["team2"], r["city"]), axis=1)
+
+    # Season match number (normalised position within season, 0-1)
     df["season_year"] = df["season"].str.extract(r"(\d{4})").astype(float)
+    df["season_match_number"] = df.groupby("season").cumcount() + 1
+    season_sizes = df.groupby("season")["match_id"].transform("count")
+    df["season_progress"] = df["season_match_number"] / season_sizes  # 0→1 through season
 
     return df
 
@@ -301,14 +408,19 @@ def main():
         "Target / Result":     ["target","score_diff","run_rate_inn1","run_rate_inn2",
                                  "team1_won","win_method"],
         "Toss":                ["toss_winner_is_team1","toss_bat_first","toss_winner_batted"],
-        "Powerplay":           ["pp_runs_inn1","pp_wkts_inn1","pp_runs_inn2","pp_wkts_inn2"],
-        "Middle Overs":        ["mid_runs_inn1","mid_wkts_inn1","mid_runs_inn2","mid_wkts_inn2"],
-        "Death Overs":         ["death_runs_inn1","death_wkts_inn1","death_runs_inn2","death_wkts_inn2"],
+        "Powerplay":           ["pp_runs_inn1","pp_wickets_inn1","pp_runs_inn2","pp_wickets_inn2"],
+        "Middle Overs":        ["mid_runs_inn1","mid_wickets_inn1","mid_runs_inn2","mid_wickets_inn2"],
+        "Death Overs":         ["death_runs_inn1","death_wickets_inn1","death_runs_inn2","death_wickets_inn2"],
         "Boundaries":          ["fours_inn1","sixes_inn1","dot_balls_inn1",
                                  "fours_inn2","sixes_inn2","dot_balls_inn2"],
         "Head-to-Head":        ["h2h_matches","h2h_team1_wins","h2h_team1_win_rate"],
         "Venue":               ["team1_venue_win_rate","team2_venue_win_rate"],
         "Recent Form":         ["team1_recent_form","team2_recent_form"],
+        "Bat-First Win Rate":  ["team1_win_after_batting_first","team2_win_after_batting_first"],
+        "Avg Powerplay Runs":  ["team1_avg_pp_runs","team2_avg_pp_runs"],
+        "Avg Death Wickets":   ["team1_avg_death_wkts","team2_avg_death_wkts"],
+        "Home Advantage":      ["is_home_team1","is_home_team2"],
+        "Season Progress":     ["season_match_number","season_progress"],
     }
     for group, cols in feature_groups.items():
         present = [c for c in cols if c in match_features.columns]

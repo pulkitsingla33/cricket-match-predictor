@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import joblib
 import time
 from rich.console import Console
@@ -11,35 +12,79 @@ from pathlib import Path
 
 console = Console()
 
+# Home cities mapping (must match ipl_feature_engineering.py)
+TEAM_HOME_CITIES = {
+    "Mumbai Indians": ["Mumbai"],
+    "Chennai Super Kings": ["Chennai"],
+    "Royal Challengers Bengaluru": ["Bangalore", "Bengaluru"],
+    "Kolkata Knight Riders": ["Kolkata"],
+    "Delhi Capitals": ["Delhi"],
+    "Punjab Kings": ["Chandigarh", "Mohali", "Mullanpur"],
+    "Rajasthan Royals": ["Jaipur"],
+    "Sunrisers Hyderabad": ["Hyderabad"],
+    "Lucknow Super Giants": ["Lucknow"],
+    "Gujarat Titans": ["Ahmedabad"],
+    "Deccan Chargers": ["Hyderabad"],
+    "Kochi Tuskers Kerala": ["Kochi"],
+    "Pune Warriors": ["Pune"],
+    "Rising Pune Supergiants": ["Pune"],
+    "Gujarat Lions": ["Rajkot", "Ahmedabad"],
+}
+
 def load_latest_stats(team1, team2, venue):
     """
-    Simulates fetching the latest pre-match stats for the two teams.
-    In a real app, this would pull from a live database.
+    Fetches the latest pre-match stats for the two teams.
+    Pulls actual computed stats from the feature CSVs.
     """
-    data_path = Path(__file__).parent / "features_match_level.csv"
-    df = pd.read_csv(data_path)
+    data_path = Path(__file__).parent
+    df = pd.read_csv(data_path / "features_match_level.csv")
+    batting_df = pd.read_csv(data_path / "features_batting.csv")
+    bowling_df = pd.read_csv(data_path / "features_bowling.csv")
     
-    # Pre-calculate player strengths (simplified for TUI)
-    # In practice, we'd use the same logic as train_model.py
-    # Here we'll just mock it or pull representative values if possible
-    # For now, let's grab the most recent match for each team to get their form
+    df['date'] = pd.to_datetime(df['date'])
+    df = df.sort_values('date')
     
     def get_team_stats(team):
-        recent = df[(df['team1'] == team) | (df['team2'] == team)].sort_values('date', ascending=False).iloc[0]
-        if recent['team1'] == team:
+        """Pull the most recent stats for a team from feature CSVs."""
+        recent = df[(df['team1'] == team) | (df['team2'] == team)].sort_values('date', ascending=False)
+        if recent.empty:
             return {
-                'form': recent['team1_recent_form'],
-                'venue_wr': recent['team1_venue_win_rate'], # Not perfect as venue might differ
-                'bat_sr': 135.0, # Placeholder averages if not in main CSV
-                'bowl_econ': 8.5
+                'form': 0.5, 'venue_wr': 0.5, 'bat_first_wr': 0.5,
+                'avg_pp_runs': 45.0, 'avg_death_wkts': 2.0,
+                'bat_sr': 130.0, 'bat_avg': 25.0,
+                'bowl_econ': 8.5, 'bowl_wkts': 1.5,
             }
-        else:
-            return {
-                'form': recent['team2_recent_form'],
-                'venue_wr': recent['team2_venue_win_rate'],
-                'bat_sr': 135.0,
-                'bowl_econ': 8.5
-            }
+        
+        latest = recent.iloc[0]
+        prefix = 'team1' if latest['team1'] == team else 'team2'
+        
+        stats = {
+            'form': latest.get(f'{prefix}_recent_form', 0.5),
+            'venue_wr': latest.get(f'{prefix}_venue_win_rate', 0.5),
+            'bat_first_wr': latest.get(f'{prefix}_win_after_batting_first', 0.5),
+            'avg_pp_runs': latest.get(f'{prefix}_avg_pp_runs', 45.0),
+            'avg_death_wkts': latest.get(f'{prefix}_avg_death_wkts', 2.0),
+        }
+        
+        # Pull actual player strength from batting/bowling CSVs
+        # Get most recent matches for team's batters and bowlers
+        recent_match_ids = recent['match_id'].head(5).tolist()
+        
+        team_batting = batting_df[
+            (batting_df['match_id'].isin(recent_match_ids)) & 
+            (batting_df['batting_team'] == team)
+        ]
+        stats['bat_sr'] = team_batting['strike_rate'].mean() if len(team_batting) > 0 else 130.0
+        stats['bat_avg'] = team_batting['runs'].mean() if len(team_batting) > 0 else 25.0
+        
+        team_bowling = bowling_df[
+            (bowling_df['match_id'].isin(recent_match_ids)) & 
+            (bowling_df['bowling_team'] == team)
+        ]
+        stats['bowl_econ'] = team_bowling['economy'].mean() if len(team_bowling) > 0 else 8.5
+        stats['bowl_wkts'] = team_bowling['wickets'].mean() if len(team_bowling) > 0 else 1.5
+        
+        return stats
 
     # Fetching H2H
     h2h = df[((df['team1'] == team1) & (df['team2'] == team2)) | 
@@ -47,39 +92,73 @@ def load_latest_stats(team1, team2, venue):
     
     if not h2h.empty:
         latest_h2h = h2h.iloc[0]
+        h2h_matches = latest_h2h.get('h2h_matches', 0)
         if latest_h2h['team1'] == team1:
             h2h_wr = latest_h2h['h2h_team1_win_rate']
         else:
             h2h_wr = 1 - latest_h2h['h2h_team1_win_rate']
     else:
         h2h_wr = 0.5
+        h2h_matches = 0
         
     t1_stats = get_team_stats(team1)
     t2_stats = get_team_stats(team2)
     
-    # Construct feature row
+    # Home advantage
+    venue_city = df[df['venue'] == venue]['city'].mode()
+    city = venue_city.iloc[0] if len(venue_city) > 0 else None
+    is_home_t1 = int(city in TEAM_HOME_CITIES.get(team1, [])) if city else 0
+    is_home_t2 = int(city in TEAM_HOME_CITIES.get(team2, [])) if city else 0
+    
+    # Construct feature row matching the model's expected features
     features = {
         'team1': team1,
         'team2': team2,
-        'venue': venue,
-        'toss_winner_is_team1': 1, # Default assumption for TUI
+        # Toss
+        'toss_winner_is_team1': 1,  # Default assumption for TUI
         'toss_bat_first': 0,
+        # Historical rates
         'h2h_team1_win_rate': h2h_wr,
+        'h2h_matches': h2h_matches,
         'team1_venue_win_rate': t1_stats['venue_wr'],
         'team2_venue_win_rate': t2_stats['venue_wr'],
         'team1_recent_form': t1_stats['form'],
         'team2_recent_form': t2_stats['form'],
+        # Player strength
         'team1_batting_sr': t1_stats['bat_sr'],
         'team2_batting_sr': t2_stats['bat_sr'],
+        'team1_batting_avg': t1_stats['bat_avg'],
+        'team2_batting_avg': t2_stats['bat_avg'],
         'team1_bowling_econ': t1_stats['bowl_econ'],
-        'team2_bowling_econ': t2_stats['bowl_econ']
+        'team2_bowling_econ': t2_stats['bowl_econ'],
+        'team1_bowling_wkts': t1_stats['bowl_wkts'],
+        'team2_bowling_wkts': t2_stats['bowl_wkts'],
+        # New features
+        'team1_win_after_batting_first': t1_stats['bat_first_wr'],
+        'team2_win_after_batting_first': t2_stats['bat_first_wr'],
+        'team1_avg_pp_runs': t1_stats['avg_pp_runs'],
+        'team2_avg_pp_runs': t2_stats['avg_pp_runs'],
+        'team1_avg_death_wkts': t1_stats['avg_death_wkts'],
+        'team2_avg_death_wkts': t2_stats['avg_death_wkts'],
+        'is_home_team1': is_home_t1,
+        'is_home_team2': is_home_t2,
+        'season_progress': 0.5,  # Default mid-season
+        # Differential features (computed here to match training)
+        'form_diff': t1_stats['form'] - t2_stats['form'],
+        'batting_sr_diff': t1_stats['bat_sr'] - t2_stats['bat_sr'],
+        'batting_avg_diff': t1_stats['bat_avg'] - t2_stats['bat_avg'],
+        'bowling_econ_diff': t2_stats['bowl_econ'] - t1_stats['bowl_econ'],
+        'bowling_wkts_diff': t1_stats['bowl_wkts'] - t2_stats['bowl_wkts'],
+        'venue_wr_diff': t1_stats['venue_wr'] - t2_stats['venue_wr'],
+        'pp_runs_diff': t1_stats['avg_pp_runs'] - t2_stats['avg_pp_runs'],
+        'death_wkts_diff': t1_stats['avg_death_wkts'] - t2_stats['avg_death_wkts'],
     }
     
     return pd.DataFrame([features])
 
 def main():
     console.clear()
-    rprint(Panel.fit("[bold green]🏏 IPL Match Outcome Predictor [white]Ensemble Edition[/white] [/bold green]", subtitle="v1.0"))
+    rprint(Panel.fit("[bold green]🏏 IPL Match Outcome Predictor [white]Ensemble Edition[/white] [/bold green]", subtitle="v2.0"))
     
     # Load Model
     with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), transient=True) as progress:
@@ -97,6 +176,14 @@ def main():
     table = Table(show_header=False, box=None)
     for i in range(0, len(teams), 2):
         row = teams[i:i+2]
+        table.add_row(*row)
+    console.print(table)
+
+    rprint("[bold cyan]Available Venues:[/bold cyan]")
+    # Print venues in columns
+    table = Table(show_header=False, box=None)
+    for i in range(0, len(venues), 2):
+        row = venues[i:i+2]
         table.add_row(*row)
     console.print(table)
     
@@ -131,6 +218,11 @@ def main():
     res_table.add_row("Recent Form (Win %)", f"{input_row['team1_recent_form']*100:.1f}%", f"{input_row['team2_recent_form']*100:.1f}%")
     res_table.add_row("Venue Record (Win %)", f"{input_row['team1_venue_win_rate']*100:.1f}%", f"{input_row['team2_venue_win_rate']*100:.1f}%")
     res_table.add_row("Head-to-Head Win Rate", f"{input_row['h2h_team1_win_rate']*100:.1f}%", f"{(1-input_row['h2h_team1_win_rate'])*100:.1f}%")
+    res_table.add_row("Batting Strike Rate", f"{input_row['team1_batting_sr']:.1f}", f"{input_row['team2_batting_sr']:.1f}")
+    res_table.add_row("Bowling Economy", f"{input_row['team1_bowling_econ']:.2f}", f"{input_row['team2_bowling_econ']:.2f}")
+    res_table.add_row("Bat-First Win Rate", f"{input_row['team1_win_after_batting_first']*100:.1f}%", f"{input_row['team2_win_after_batting_first']*100:.1f}%")
+    res_table.add_row("Avg Powerplay Runs", f"{input_row['team1_avg_pp_runs']:.1f}", f"{input_row['team2_avg_pp_runs']:.1f}")
+    res_table.add_row("Home Advantage", "✓" if input_row['is_home_team1'] else "✗", "✓" if input_row['is_home_team2'] else "✗")
     
     console.print(res_table)
     
