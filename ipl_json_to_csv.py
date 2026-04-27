@@ -38,6 +38,44 @@ def normalize_team_name(team_name: str) -> str:
 
 
 # ─────────────────────────────────────────────
+# VENUE NAME NORMALIZATION
+# ─────────────────────────────────────────────
+
+VENUE_NAME_MAPPING = {
+    # Location-suffix duplicates → canonical short name
+    "Arun Jaitley Stadium, Delhi":                                          "Arun Jaitley Stadium",
+    "Brabourne Stadium, Mumbai":                                            "Brabourne Stadium",
+    "Dr DY Patil Sports Academy, Mumbai":                                   "Dr DY Patil Sports Academy",
+    "Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium, Visakhapatnam":  "Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium",
+    "Eden Gardens, Kolkata":                                                "Eden Gardens",
+    "Himachal Pradesh Cricket Association Stadium, Dharamsala":              "Himachal Pradesh Cricket Association Stadium",
+    "M.Chinnaswamy Stadium":                                                "M Chinnaswamy Stadium",
+    "M Chinnaswamy Stadium, Bengaluru":                                     "M Chinnaswamy Stadium",
+    "MA Chidambaram Stadium, Chepauk":                                      "MA Chidambaram Stadium",
+    "MA Chidambaram Stadium, Chepauk, Chennai":                             "MA Chidambaram Stadium",
+    "Maharaja Yadavindra Singh International Cricket Stadium, New Chandigarh": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+    "Maharashtra Cricket Association Stadium, Pune":                        "Maharashtra Cricket Association Stadium",
+    "Punjab Cricket Association IS Bindra Stadium, Mohali":                 "Punjab Cricket Association IS Bindra Stadium",
+    "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh":     "Punjab Cricket Association IS Bindra Stadium",
+    "Punjab Cricket Association Stadium, Mohali":                           "Punjab Cricket Association IS Bindra Stadium",
+    "Rajiv Gandhi International Stadium, Uppal":                            "Rajiv Gandhi International Stadium",
+    "Rajiv Gandhi International Stadium, Uppal, Hyderabad":                 "Rajiv Gandhi International Stadium",
+    "Sawai Mansingh Stadium, Jaipur":                                       "Sawai Mansingh Stadium",
+    "Vidarbha Cricket Association Stadium, Jamtha":                         "Vidarbha Cricket Association Stadium",
+    "Wankhede Stadium, Mumbai":                                             "Wankhede Stadium",
+    # Renamed stadiums
+    "Feroz Shah Kotla":                                                     "Arun Jaitley Stadium",
+    "Sardar Patel Stadium, Motera":                                         "Narendra Modi Stadium, Ahmedabad",
+}
+
+def normalize_venue_name(venue: str) -> str:
+    """Normalize venue name to canonical form (strip location suffixes, unify renames)."""
+    if venue is None:
+        return None
+    return VENUE_NAME_MAPPING.get(venue, venue)
+
+
+# ─────────────────────────────────────────────
 # MATCH-LEVEL EXTRACTION
 # ─────────────────────────────────────────────
 
@@ -83,7 +121,7 @@ def extract_match_row(match_id: str, data: dict) -> dict:
         "match_id":            match_id,
         "season":              info.get("season"),
         "date":                dates[0] if dates else None,
-        "venue":               info.get("venue"),
+        "venue":               normalize_venue_name(info.get("venue")),
         "city":                info.get("city"),
         "team1":               normalize_team_name(teams[0] if len(teams) > 0 else None),
         "team2":               normalize_team_name(teams[1] if len(teams) > 1 else None),
