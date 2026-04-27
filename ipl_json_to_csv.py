@@ -27,6 +27,7 @@ TEAM_NAME_MAPPING = {
     "Kings XI Punjab": "Punjab Kings",
     "Delhi Daredevils": "Delhi Capitals",
     "Royal Challengers Bangalore": "Royal Challengers Bengaluru",
+    "Rising Pune Supergiant": "Rising Pune Supergiants",
 }
 
 def normalize_team_name(team_name: str) -> str:

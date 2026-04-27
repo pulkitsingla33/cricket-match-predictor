@@ -8669,11 +8669,11 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082592,1,Mumbai Indians,PA Patel,19,14,4,0,7,135.71428571428572,28.571428571428573,1
 1082592,1,Mumbai Indians,RG Sharma,3,7,0,0,4,42.857142857142854,0.0,1
 1082592,1,Mumbai Indians,TG Southee,7,3,0,1,1,233.33333333333334,33.333333333333336,1
-1082592,2,Rising Pune Supergiant,AM Rahane,60,34,6,3,8,176.47058823529412,26.470588235294116,1
-1082592,2,Rising Pune Supergiant,BA Stokes,21,14,3,0,3,150.0,21.428571428571427,1
-1082592,2,Rising Pune Supergiant,MA Agarwal,6,5,1,0,2,120.0,20.0,1
-1082592,2,Rising Pune Supergiant,MS Dhoni,12,12,1,0,3,100.0,8.333333333333334,0
-1082592,2,Rising Pune Supergiant,SPD Smith,84,54,7,3,14,155.55555555555554,18.51851851851852,0
+1082592,2,Rising Pune Supergiants,AM Rahane,60,34,6,3,8,176.47058823529412,26.470588235294116,1
+1082592,2,Rising Pune Supergiants,BA Stokes,21,14,3,0,3,150.0,21.428571428571427,1
+1082592,2,Rising Pune Supergiants,MA Agarwal,6,5,1,0,2,120.0,20.0,1
+1082592,2,Rising Pune Supergiants,MS Dhoni,12,12,1,0,3,100.0,8.333333333333334,0
+1082592,2,Rising Pune Supergiants,SPD Smith,84,54,7,3,14,155.55555555555554,18.51851851851852,0
 1082593,1,Gujarat Lions,AJ Finch,15,8,0,2,3,187.5,25.0,1
 1082593,1,Gujarat Lions,BB McCullum,35,24,4,2,12,145.83333333333334,25.0,1
 1082593,1,Gujarat Lions,JJ Roy,14,12,3,0,7,116.66666666666667,25.0,1
@@ -8681,13 +8681,13 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082593,1,Gujarat Lions,SK Raina,68,51,7,0,9,133.33333333333334,13.72549019607843,0
 1082593,2,Kolkata Knight Riders,CA Lynn,93,41,6,8,9,226.82926829268294,34.146341463414636,0
 1082593,2,Kolkata Knight Riders,G Gambhir,76,48,12,0,13,158.33333333333334,25.0,0
-1082594,1,Rising Pune Supergiant,AM Rahane,19,15,1,1,4,126.66666666666667,13.333333333333334,1
-1082594,1,Rising Pune Supergiant,BA Stokes,50,32,2,3,4,156.25,15.625,1
-1082594,1,Rising Pune Supergiant,DT Christian,17,8,2,1,2,212.5,37.5,1
-1082594,1,Rising Pune Supergiant,MA Agarwal,0,4,0,0,4,0.0,0.0,1
-1082594,1,Rising Pune Supergiant,MK Tiwary,40,23,3,2,2,173.91304347826087,21.73913043478261,0
-1082594,1,Rising Pune Supergiant,MS Dhoni,5,11,0,0,6,45.45454545454545,0.0,1
-1082594,1,Rising Pune Supergiant,SPD Smith,26,27,3,0,11,96.29629629629629,11.11111111111111,1
+1082594,1,Rising Pune Supergiants,AM Rahane,19,15,1,1,4,126.66666666666667,13.333333333333334,1
+1082594,1,Rising Pune Supergiants,BA Stokes,50,32,2,3,4,156.25,15.625,1
+1082594,1,Rising Pune Supergiants,DT Christian,17,8,2,1,2,212.5,37.5,1
+1082594,1,Rising Pune Supergiants,MA Agarwal,0,4,0,0,4,0.0,0.0,1
+1082594,1,Rising Pune Supergiants,MK Tiwary,40,23,3,2,2,173.91304347826087,21.73913043478261,0
+1082594,1,Rising Pune Supergiants,MS Dhoni,5,11,0,0,6,45.45454545454545,0.0,1
+1082594,1,Rising Pune Supergiants,SPD Smith,26,27,3,0,11,96.29629629629629,11.11111111111111,1
 1082594,2,Punjab Kings,AR Patel,24,22,1,1,7,109.0909090909091,9.090909090909092,1
 1082594,2,Punjab Kings,DA Miller,30,27,1,2,12,111.11111111111111,11.11111111111111,0
 1082594,2,Punjab Kings,GJ Maxwell,44,20,3,4,5,220.0,35.0,0
@@ -8758,17 +8758,17 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082599,1,Delhi Capitals,RR Pant,31,22,1,2,5,140.9090909090909,13.636363636363637,1
 1082599,1,Delhi Capitals,SV Samson,102,63,8,5,18,161.9047619047619,20.634920634920636,1
 1082599,1,Delhi Capitals,SW Billings,24,17,4,0,5,141.1764705882353,23.529411764705884,1
-1082599,2,Rising Pune Supergiant,A Zampa,5,7,1,0,5,71.42857142857143,14.285714285714286,1
-1082599,2,Rising Pune Supergiant,AB Dinda,7,7,1,0,3,100.0,14.285714285714286,1
-1082599,2,Rising Pune Supergiant,AM Rahane,10,9,0,0,1,111.11111111111111,0.0,1
-1082599,2,Rising Pune Supergiant,BA Stokes,2,5,0,0,3,40.0,0.0,1
-1082599,2,Rising Pune Supergiant,DL Chahar,14,6,0,2,2,233.33333333333334,33.333333333333336,1
-1082599,2,Rising Pune Supergiant,F du Plessis,8,7,1,0,2,114.28571428571429,14.285714285714286,1
-1082599,2,Rising Pune Supergiant,Imran Tahir,0,2,0,0,2,0.0,0.0,0
-1082599,2,Rising Pune Supergiant,MA Agarwal,20,18,2,0,7,111.11111111111111,11.11111111111111,1
-1082599,2,Rising Pune Supergiant,MS Dhoni,11,14,0,1,8,78.57142857142857,7.142857142857143,1
-1082599,2,Rising Pune Supergiant,R Bhatia,16,17,0,1,7,94.11764705882354,5.882352941176471,1
-1082599,2,Rising Pune Supergiant,RA Tripathi,10,5,2,0,2,200.0,40.0,1
+1082599,2,Rising Pune Supergiants,A Zampa,5,7,1,0,5,71.42857142857143,14.285714285714286,1
+1082599,2,Rising Pune Supergiants,AB Dinda,7,7,1,0,3,100.0,14.285714285714286,1
+1082599,2,Rising Pune Supergiants,AM Rahane,10,9,0,0,1,111.11111111111111,0.0,1
+1082599,2,Rising Pune Supergiants,BA Stokes,2,5,0,0,3,40.0,0.0,1
+1082599,2,Rising Pune Supergiants,DL Chahar,14,6,0,2,2,233.33333333333334,33.333333333333336,1
+1082599,2,Rising Pune Supergiants,F du Plessis,8,7,1,0,2,114.28571428571429,14.285714285714286,1
+1082599,2,Rising Pune Supergiants,Imran Tahir,0,2,0,0,2,0.0,0.0,0
+1082599,2,Rising Pune Supergiants,MA Agarwal,20,18,2,0,7,111.11111111111111,11.11111111111111,1
+1082599,2,Rising Pune Supergiants,MS Dhoni,11,14,0,1,8,78.57142857142857,7.142857142857143,1
+1082599,2,Rising Pune Supergiants,R Bhatia,16,17,0,1,7,94.11764705882354,5.882352941176471,1
+1082599,2,Rising Pune Supergiants,RA Tripathi,10,5,2,0,2,200.0,40.0,1
 1082600,1,Sunrisers Hyderabad,B Kumar,4,3,0,0,0,133.33333333333334,0.0,0
 1082600,1,Sunrisers Hyderabad,BCJ Cutting,20,10,4,0,2,200.0,40.0,1
 1082600,1,Sunrisers Hyderabad,DA Warner,49,34,7,2,16,144.11764705882354,26.470588235294116,1
@@ -8814,16 +8814,16 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082602,2,Mumbai Indians,N Rana,11,16,1,0,8,68.75,6.25,1
 1082602,2,Mumbai Indians,PA Patel,3,8,0,0,5,37.5,0.0,1
 1082602,2,Mumbai Indians,RG Sharma,0,2,0,0,2,0.0,0.0,1
-1082603,1,Rising Pune Supergiant,AM Rahane,0,3,0,0,3,0.0,0.0,1
-1082603,1,Rising Pune Supergiant,Ankit Sharma,25,15,2,1,3,166.66666666666666,20.0,1
-1082603,1,Rising Pune Supergiant,BA Stokes,25,18,2,1,4,138.88888888888889,16.666666666666668,1
-1082603,1,Rising Pune Supergiant,LH Ferguson,1,1,0,0,0,100.0,0.0,0
-1082603,1,Rising Pune Supergiant,MK Tiwary,31,27,2,1,9,114.81481481481481,11.11111111111111,1
-1082603,1,Rising Pune Supergiant,MS Dhoni,5,8,0,0,4,62.5,0.0,1
-1082603,1,Rising Pune Supergiant,RA Tripathi,33,17,3,2,5,194.11764705882354,29.41176470588235,1
-1082603,1,Rising Pune Supergiant,RD Chahar,3,2,0,0,0,150.0,0.0,0
-1082603,1,Rising Pune Supergiant,SN Thakur,0,1,0,0,1,0.0,0.0,1
-1082603,1,Rising Pune Supergiant,SPD Smith,43,28,6,1,9,153.57142857142858,25.0,1
+1082603,1,Rising Pune Supergiants,AM Rahane,0,3,0,0,3,0.0,0.0,1
+1082603,1,Rising Pune Supergiants,Ankit Sharma,25,15,2,1,3,166.66666666666666,20.0,1
+1082603,1,Rising Pune Supergiants,BA Stokes,25,18,2,1,4,138.88888888888889,16.666666666666668,1
+1082603,1,Rising Pune Supergiants,LH Ferguson,1,1,0,0,0,100.0,0.0,0
+1082603,1,Rising Pune Supergiants,MK Tiwary,31,27,2,1,9,114.81481481481481,11.11111111111111,1
+1082603,1,Rising Pune Supergiants,MS Dhoni,5,8,0,0,4,62.5,0.0,1
+1082603,1,Rising Pune Supergiants,RA Tripathi,33,17,3,2,5,194.11764705882354,29.41176470588235,1
+1082603,1,Rising Pune Supergiants,RD Chahar,3,2,0,0,0,150.0,0.0,0
+1082603,1,Rising Pune Supergiants,SN Thakur,0,1,0,0,1,0.0,0.0,1
+1082603,1,Rising Pune Supergiants,SPD Smith,43,28,6,1,9,153.57142857142858,25.0,1
 1082603,2,Gujarat Lions,AJ Finch,33,19,3,2,6,173.68421052631578,26.31578947368421,0
 1082603,2,Gujarat Lions,BB McCullum,49,32,5,3,14,153.125,25.0,1
 1082603,2,Gujarat Lions,DR Smith,47,30,8,1,13,156.66666666666666,30.0,1
@@ -8875,15 +8875,15 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082606,2,Mumbai Indians,N Rana,53,36,4,2,10,147.22222222222223,16.666666666666668,1
 1082606,2,Mumbai Indians,PA Patel,0,2,0,0,2,0.0,0.0,1
 1082606,2,Mumbai Indians,RG Sharma,40,29,3,1,6,137.93103448275863,13.793103448275861,0
-1082607,1,Rising Pune Supergiant,AM Rahane,30,25,5,0,10,120.0,20.0,1
-1082607,1,Rising Pune Supergiant,BA Stokes,2,3,0,0,1,66.66666666666667,0.0,1
-1082607,1,Rising Pune Supergiant,DT Christian,1,3,0,0,2,33.333333333333336,0.0,1
-1082607,1,Rising Pune Supergiant,JD Unadkat,2,5,0,0,3,40.0,0.0,0
-1082607,1,Rising Pune Supergiant,MK Tiwary,27,11,3,2,3,245.45454545454547,45.45454545454545,1
-1082607,1,Rising Pune Supergiant,MS Dhoni,28,25,3,1,12,112.0,16.0,1
-1082607,1,Rising Pune Supergiant,RA Tripathi,31,23,3,1,7,134.7826086956522,17.391304347826086,1
-1082607,1,Rising Pune Supergiant,SN Thakur,0,1,0,0,1,0.0,0.0,1
-1082607,1,Rising Pune Supergiant,SPD Smith,27,24,3,0,7,112.5,12.5,1
+1082607,1,Rising Pune Supergiants,AM Rahane,30,25,5,0,10,120.0,20.0,1
+1082607,1,Rising Pune Supergiants,BA Stokes,2,3,0,0,1,66.66666666666667,0.0,1
+1082607,1,Rising Pune Supergiants,DT Christian,1,3,0,0,2,33.333333333333336,0.0,1
+1082607,1,Rising Pune Supergiants,JD Unadkat,2,5,0,0,3,40.0,0.0,0
+1082607,1,Rising Pune Supergiants,MK Tiwary,27,11,3,2,3,245.45454545454547,45.45454545454545,1
+1082607,1,Rising Pune Supergiants,MS Dhoni,28,25,3,1,12,112.0,16.0,1
+1082607,1,Rising Pune Supergiants,RA Tripathi,31,23,3,1,7,134.7826086956522,17.391304347826086,1
+1082607,1,Rising Pune Supergiants,SN Thakur,0,1,0,0,1,0.0,0.0,1
+1082607,1,Rising Pune Supergiants,SPD Smith,27,24,3,0,7,112.5,12.5,1
 1082607,2,Royal Challengers Bengaluru,AB de Villiers,29,30,1,2,15,96.66666666666667,10.0,1
 1082607,2,Royal Challengers Bengaluru,AF Milne,2,3,0,0,1,66.66666666666667,0.0,1
 1082607,2,Royal Challengers Bengaluru,KM Jadhav,18,22,0,0,5,81.81818181818181,0.0,1
@@ -9005,12 +9005,12 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082615,1,Sunrisers Hyderabad,KS Williamson,21,14,1,1,4,150.0,14.285714285714286,1
 1082615,1,Sunrisers Hyderabad,MC Henriques,55,28,6,2,5,196.42857142857142,28.571428571428573,0
 1082615,1,Sunrisers Hyderabad,S Dhawan,30,29,5,0,14,103.44827586206897,17.24137931034483,1
-1082615,2,Rising Pune Supergiant,AM Rahane,2,7,0,0,5,28.571428571428573,0.0,1
-1082615,2,Rising Pune Supergiant,BA Stokes,10,9,1,0,2,111.11111111111111,11.11111111111111,1
-1082615,2,Rising Pune Supergiant,MK Tiwary,17,8,3,0,0,212.5,37.5,0
-1082615,2,Rising Pune Supergiant,MS Dhoni,61,34,5,3,7,179.41176470588235,23.529411764705884,0
-1082615,2,Rising Pune Supergiant,RA Tripathi,59,41,6,3,17,143.90243902439025,21.951219512195124,1
-1082615,2,Rising Pune Supergiant,SPD Smith,27,21,1,2,7,128.57142857142858,14.285714285714286,1
+1082615,2,Rising Pune Supergiants,AM Rahane,2,7,0,0,5,28.571428571428573,0.0,1
+1082615,2,Rising Pune Supergiants,BA Stokes,10,9,1,0,2,111.11111111111111,11.11111111111111,1
+1082615,2,Rising Pune Supergiants,MK Tiwary,17,8,3,0,0,212.5,37.5,0
+1082615,2,Rising Pune Supergiants,MS Dhoni,61,34,5,3,7,179.41176470588235,23.529411764705884,0
+1082615,2,Rising Pune Supergiants,RA Tripathi,59,41,6,3,17,143.90243902439025,21.951219512195124,1
+1082615,2,Rising Pune Supergiants,SPD Smith,27,21,1,2,7,128.57142857142858,14.285714285714286,1
 1082616,1,Punjab Kings,AR Patel,34,17,3,2,3,200.0,29.41176470588235,1
 1082616,1,Punjab Kings,GJ Maxwell,31,18,1,3,5,172.22222222222223,22.22222222222222,1
 1082616,1,Punjab Kings,HM Amla,65,40,9,2,13,162.5,27.5,1
@@ -9050,14 +9050,14 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082617,2,Royal Challengers Bengaluru,TS Mills,2,5,0,0,3,40.0,0.0,1
 1082617,2,Royal Challengers Bengaluru,V Kohli,0,1,0,0,1,0.0,0.0,1
 1082617,2,Royal Challengers Bengaluru,YS Chahal,0,2,0,0,2,0.0,0.0,1
-1082618,1,Rising Pune Supergiant,AM Rahane,38,32,5,1,15,118.75,18.75,1
-1082618,1,Rising Pune Supergiant,BA Stokes,17,12,2,0,4,141.66666666666666,16.666666666666668,1
-1082618,1,Rising Pune Supergiant,DT Christian,8,7,1,0,4,114.28571428571429,14.285714285714286,0
-1082618,1,Rising Pune Supergiant,MK Tiwary,22,13,4,0,4,169.23076923076923,30.76923076923077,1
-1082618,1,Rising Pune Supergiant,MS Dhoni,7,11,0,0,4,63.63636363636363,0.0,1
-1082618,1,Rising Pune Supergiant,RA Tripathi,45,31,3,2,9,145.16129032258064,16.129032258064516,1
-1082618,1,Rising Pune Supergiant,SPD Smith,17,12,2,0,2,141.66666666666666,16.666666666666668,1
-1082618,1,Rising Pune Supergiant,Washington Sundar,2,2,0,0,1,100.0,0.0,0
+1082618,1,Rising Pune Supergiants,AM Rahane,38,32,5,1,15,118.75,18.75,1
+1082618,1,Rising Pune Supergiants,BA Stokes,17,12,2,0,4,141.66666666666666,16.666666666666668,1
+1082618,1,Rising Pune Supergiants,DT Christian,8,7,1,0,4,114.28571428571429,14.285714285714286,0
+1082618,1,Rising Pune Supergiants,MK Tiwary,22,13,4,0,4,169.23076923076923,30.76923076923077,1
+1082618,1,Rising Pune Supergiants,MS Dhoni,7,11,0,0,4,63.63636363636363,0.0,1
+1082618,1,Rising Pune Supergiants,RA Tripathi,45,31,3,2,9,145.16129032258064,16.129032258064516,1
+1082618,1,Rising Pune Supergiants,SPD Smith,17,12,2,0,2,141.66666666666666,16.666666666666668,1
+1082618,1,Rising Pune Supergiants,Washington Sundar,2,2,0,0,1,100.0,0.0,0
 1082618,2,Mumbai Indians,HH Pandya,13,11,2,0,4,118.18181818181819,18.181818181818183,1
 1082618,2,Mumbai Indians,Harbhajan Singh,7,2,0,1,0,350.0,50.0,0
 1082618,2,Mumbai Indians,JC Buttler,17,13,3,0,6,130.76923076923077,23.076923076923077,1
@@ -9066,12 +9066,12 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082618,2,Mumbai Indians,N Rana,3,9,0,0,6,33.333333333333336,0.0,1
 1082618,2,Mumbai Indians,PA Patel,33,27,4,0,8,122.22222222222223,14.814814814814815,1
 1082618,2,Mumbai Indians,RG Sharma,58,39,6,3,15,148.71794871794873,23.076923076923077,1
-1082620,1,Rising Pune Supergiant,AM Rahane,46,41,4,1,14,112.1951219512195,12.195121951219512,1
-1082620,1,Rising Pune Supergiant,DT Christian,16,6,0,2,1,266.6666666666667,33.333333333333336,1
-1082620,1,Rising Pune Supergiant,MK Tiwary,1,2,0,0,1,50.0,0.0,1
-1082620,1,Rising Pune Supergiant,MS Dhoni,23,11,1,2,3,209.0909090909091,27.272727272727273,1
-1082620,1,Rising Pune Supergiant,RA Tripathi,38,23,7,0,6,165.2173913043478,30.434782608695652,1
-1082620,1,Rising Pune Supergiant,SPD Smith,51,37,4,1,8,137.83783783783784,13.513513513513514,0
+1082620,1,Rising Pune Supergiants,AM Rahane,46,41,4,1,14,112.1951219512195,12.195121951219512,1
+1082620,1,Rising Pune Supergiants,DT Christian,16,6,0,2,1,266.6666666666667,33.333333333333336,1
+1082620,1,Rising Pune Supergiants,MK Tiwary,1,2,0,0,1,50.0,0.0,1
+1082620,1,Rising Pune Supergiants,MS Dhoni,23,11,1,2,3,209.0909090909091,27.272727272727273,1
+1082620,1,Rising Pune Supergiants,RA Tripathi,38,23,7,0,6,165.2173913043478,30.434782608695652,1
+1082620,1,Rising Pune Supergiants,SPD Smith,51,37,4,1,8,137.83783783783784,13.513513513513514,0
 1082620,2,Kolkata Knight Riders,DM Bravo,6,5,1,0,2,120.0,20.0,0
 1082620,2,Kolkata Knight Riders,G Gambhir,62,46,6,1,12,134.7826086956522,15.217391304347826,1
 1082620,2,Kolkata Knight Riders,RV Uthappa,87,47,7,6,13,185.10638297872342,27.659574468085108,1
@@ -9119,11 +9119,11 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082623,2,Punjab Kings,MM Sharma,2,4,0,0,2,50.0,0.0,1
 1082623,2,Punjab Kings,SE Marsh,84,50,14,2,19,168.0,32.0,1
 1082623,2,Punjab Kings,WP Saha,2,4,0,0,2,50.0,0.0,1
-1082624,1,Rising Pune Supergiant,AM Rahane,6,8,0,0,3,75.0,0.0,1
-1082624,1,Rising Pune Supergiant,MK Tiwary,44,35,4,1,11,125.71428571428571,14.285714285714286,0
-1082624,1,Rising Pune Supergiant,MS Dhoni,21,17,1,1,6,123.52941176470588,11.764705882352942,0
-1082624,1,Rising Pune Supergiant,RA Tripathi,37,28,4,1,11,132.14285714285714,17.857142857142858,1
-1082624,1,Rising Pune Supergiant,SPD Smith,45,32,5,1,10,140.625,18.75,1
+1082624,1,Rising Pune Supergiants,AM Rahane,6,8,0,0,3,75.0,0.0,1
+1082624,1,Rising Pune Supergiants,MK Tiwary,44,35,4,1,11,125.71428571428571,14.285714285714286,0
+1082624,1,Rising Pune Supergiants,MS Dhoni,21,17,1,1,6,123.52941176470588,11.764705882352942,0
+1082624,1,Rising Pune Supergiants,RA Tripathi,37,28,4,1,11,132.14285714285714,17.857142857142858,1
+1082624,1,Rising Pune Supergiants,SPD Smith,45,32,5,1,10,140.625,18.75,1
 1082624,2,Royal Challengers Bengaluru,AB de Villiers,3,8,0,0,5,37.5,0.0,1
 1082624,2,Royal Challengers Bengaluru,AF Milne,5,8,0,0,4,62.5,0.0,1
 1082624,2,Royal Challengers Bengaluru,KM Jadhav,7,12,1,0,8,58.333333333333336,8.333333333333334,1
@@ -9213,13 +9213,13 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082629,1,Gujarat Lions,PJ Sangwan,1,2,0,0,1,50.0,0.0,1
 1082629,1,Gujarat Lions,RA Jadeja,19,12,3,0,4,158.33333333333334,25.0,1
 1082629,1,Gujarat Lions,SK Raina,8,8,0,0,2,100.0,0.0,1
-1082629,2,Rising Pune Supergiant,AM Rahane,4,4,1,0,3,100.0,25.0,1
-1082629,2,Rising Pune Supergiant,BA Stokes,103,63,7,6,17,163.4920634920635,20.634920634920636,0
-1082629,2,Rising Pune Supergiant,DT Christian,17,8,1,1,0,212.5,25.0,0
-1082629,2,Rising Pune Supergiant,MK Tiwary,0,2,0,0,2,0.0,0.0,1
-1082629,2,Rising Pune Supergiant,MS Dhoni,26,33,1,1,19,78.78787878787878,6.0606060606060606,1
-1082629,2,Rising Pune Supergiant,RA Tripathi,6,7,1,0,4,85.71428571428571,14.285714285714286,1
-1082629,2,Rising Pune Supergiant,SPD Smith,4,2,1,0,1,200.0,50.0,1
+1082629,2,Rising Pune Supergiants,AM Rahane,4,4,1,0,3,100.0,25.0,1
+1082629,2,Rising Pune Supergiants,BA Stokes,103,63,7,6,17,163.4920634920635,20.634920634920636,0
+1082629,2,Rising Pune Supergiants,DT Christian,17,8,1,1,0,212.5,25.0,0
+1082629,2,Rising Pune Supergiants,MK Tiwary,0,2,0,0,2,0.0,0.0,1
+1082629,2,Rising Pune Supergiants,MS Dhoni,26,33,1,1,19,78.78787878787878,6.0606060606060606,1
+1082629,2,Rising Pune Supergiants,RA Tripathi,6,7,1,0,4,85.71428571428571,14.285714285714286,1
+1082629,2,Rising Pune Supergiants,SPD Smith,4,2,1,0,1,200.0,50.0,1
 1082630,1,Sunrisers Hyderabad,DA Warner,30,21,4,1,10,142.85714285714286,23.80952380952381,1
 1082630,1,Sunrisers Hyderabad,KS Williamson,24,24,1,1,12,100.0,8.333333333333334,1
 1082630,1,Sunrisers Hyderabad,MC Henriques,25,18,2,0,1,138.88888888888889,11.11111111111111,0
@@ -9241,14 +9241,14 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082631,1,Kolkata Knight Riders,SP Narine,0,6,0,0,6,0.0,0.0,1
 1082631,1,Kolkata Knight Riders,UT Yadav,2,2,0,0,0,100.0,0.0,0
 1082631,1,Kolkata Knight Riders,YK Pathan,4,9,0,0,5,44.44444444444444,0.0,1
-1082631,2,Rising Pune Supergiant,AM Rahane,11,9,2,0,5,122.22222222222223,22.22222222222222,1
-1082631,2,Rising Pune Supergiant,BA Stokes,14,15,1,0,5,93.33333333333333,6.666666666666667,1
-1082631,2,Rising Pune Supergiant,DT Christian,9,10,0,1,6,90.0,10.0,0
-1082631,2,Rising Pune Supergiant,MK Tiwary,8,9,1,0,4,88.88888888888889,11.11111111111111,1
-1082631,2,Rising Pune Supergiant,MS Dhoni,5,9,0,0,4,55.55555555555556,0.0,1
-1082631,2,Rising Pune Supergiant,RA Tripathi,93,52,9,7,22,178.84615384615384,30.76923076923077,1
-1082631,2,Rising Pune Supergiant,SPD Smith,9,9,0,1,5,100.0,11.11111111111111,1
-1082631,2,Rising Pune Supergiant,Washington Sundar,1,3,0,0,2,33.333333333333336,0.0,0
+1082631,2,Rising Pune Supergiants,AM Rahane,11,9,2,0,5,122.22222222222223,22.22222222222222,1
+1082631,2,Rising Pune Supergiants,BA Stokes,14,15,1,0,5,93.33333333333333,6.666666666666667,1
+1082631,2,Rising Pune Supergiants,DT Christian,9,10,0,1,6,90.0,10.0,0
+1082631,2,Rising Pune Supergiants,MK Tiwary,8,9,1,0,4,88.88888888888889,11.11111111111111,1
+1082631,2,Rising Pune Supergiants,MS Dhoni,5,9,0,0,4,55.55555555555556,0.0,1
+1082631,2,Rising Pune Supergiants,RA Tripathi,93,52,9,7,22,178.84615384615384,30.76923076923077,1
+1082631,2,Rising Pune Supergiants,SPD Smith,9,9,0,1,5,100.0,11.11111111111111,1
+1082631,2,Rising Pune Supergiants,Washington Sundar,1,3,0,0,2,33.333333333333336,0.0,0
 1082632,1,Gujarat Lions,AJ Finch,27,19,4,0,8,142.10526315789474,21.05263157894737,1
 1082632,1,Gujarat Lions,BB McCullum,1,3,0,0,2,33.333333333333336,0.0,1
 1082632,1,Gujarat Lions,DR Smith,9,4,2,0,1,225.0,50.0,1
@@ -9283,15 +9283,15 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082633,2,Royal Challengers Bengaluru,SR Watson,3,6,0,0,3,50.0,0.0,1
 1082633,2,Royal Challengers Bengaluru,V Kohli,6,6,1,0,4,100.0,16.666666666666668,1
 1082633,2,Royal Challengers Bengaluru,YS Chahal,4,4,0,0,0,100.0,0.0,0
-1082634,1,Rising Pune Supergiant,AM Rahane,22,20,0,1,5,110.0,5.0,1
-1082634,1,Rising Pune Supergiant,BA Stokes,39,25,1,3,9,156.0,16.0,1
-1082634,1,Rising Pune Supergiant,DT Christian,4,2,1,0,1,200.0,50.0,1
-1082634,1,Rising Pune Supergiant,MK Tiwary,9,5,1,0,0,180.0,20.0,1
-1082634,1,Rising Pune Supergiant,MS Dhoni,31,21,2,2,9,147.61904761904762,19.047619047619047,1
-1082634,1,Rising Pune Supergiant,RA Tripathi,1,4,0,0,3,25.0,0.0,1
-1082634,1,Rising Pune Supergiant,SN Thakur,0,1,0,0,1,0.0,0.0,1
-1082634,1,Rising Pune Supergiant,SPD Smith,34,39,0,0,9,87.17948717948718,0.0,1
-1082634,1,Rising Pune Supergiant,Washington Sundar,1,3,0,0,2,33.333333333333336,0.0,0
+1082634,1,Rising Pune Supergiants,AM Rahane,22,20,0,1,5,110.0,5.0,1
+1082634,1,Rising Pune Supergiants,BA Stokes,39,25,1,3,9,156.0,16.0,1
+1082634,1,Rising Pune Supergiants,DT Christian,4,2,1,0,1,200.0,50.0,1
+1082634,1,Rising Pune Supergiants,MK Tiwary,9,5,1,0,0,180.0,20.0,1
+1082634,1,Rising Pune Supergiants,MS Dhoni,31,21,2,2,9,147.61904761904762,19.047619047619047,1
+1082634,1,Rising Pune Supergiants,RA Tripathi,1,4,0,0,3,25.0,0.0,1
+1082634,1,Rising Pune Supergiants,SN Thakur,0,1,0,0,1,0.0,0.0,1
+1082634,1,Rising Pune Supergiants,SPD Smith,34,39,0,0,9,87.17948717948718,0.0,1
+1082634,1,Rising Pune Supergiants,Washington Sundar,1,3,0,0,2,33.333333333333336,0.0,0
 1082634,2,Sunrisers Hyderabad,B Kumar,0,1,0,0,1,0.0,0.0,1
 1082634,2,Sunrisers Hyderabad,Bipul Sharma,8,7,0,0,2,114.28571428571429,0.0,1
 1082634,2,Sunrisers Hyderabad,DA Warner,40,34,4,1,13,117.6470588235294,14.705882352941176,1
@@ -9411,14 +9411,14 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082642,1,Delhi Capitals,RR Pant,36,22,4,2,9,163.63636363636363,27.272727272727273,1
 1082642,1,Delhi Capitals,SS Iyer,3,4,0,0,3,75.0,0.0,1
 1082642,1,Delhi Capitals,SV Samson,2,4,0,0,2,50.0,0.0,1
-1082642,2,Rising Pune Supergiant,AM Rahane,0,1,0,0,1,0.0,0.0,1
-1082642,2,Rising Pune Supergiant,BA Stokes,33,25,3,2,12,132.0,20.0,1
-1082642,2,Rising Pune Supergiant,DT Christian,3,3,0,0,1,100.0,0.0,1
-1082642,2,Rising Pune Supergiant,MK Tiwary,60,45,5,3,15,133.33333333333334,17.77777777777778,1
-1082642,2,Rising Pune Supergiant,MS Dhoni,5,5,0,0,2,100.0,0.0,1
-1082642,2,Rising Pune Supergiant,RA Tripathi,7,6,1,0,2,116.66666666666667,16.666666666666668,1
-1082642,2,Rising Pune Supergiant,SPD Smith,38,32,4,1,13,118.75,15.625,1
-1082642,2,Rising Pune Supergiant,Washington Sundar,5,3,0,0,0,166.66666666666666,0.0,0
+1082642,2,Rising Pune Supergiants,AM Rahane,0,1,0,0,1,0.0,0.0,1
+1082642,2,Rising Pune Supergiants,BA Stokes,33,25,3,2,12,132.0,20.0,1
+1082642,2,Rising Pune Supergiants,DT Christian,3,3,0,0,1,100.0,0.0,1
+1082642,2,Rising Pune Supergiants,MK Tiwary,60,45,5,3,15,133.33333333333334,17.77777777777778,1
+1082642,2,Rising Pune Supergiants,MS Dhoni,5,5,0,0,2,100.0,0.0,1
+1082642,2,Rising Pune Supergiants,RA Tripathi,7,6,1,0,2,116.66666666666667,16.666666666666668,1
+1082642,2,Rising Pune Supergiants,SPD Smith,38,32,4,1,13,118.75,15.625,1
+1082642,2,Rising Pune Supergiants,Washington Sundar,5,3,0,0,0,166.66666666666666,0.0,0
 1082643,1,Gujarat Lions,AJ Finch,2,3,0,0,2,66.66666666666667,0.0,1
 1082643,1,Gujarat Lions,Ankit Soni,0,6,0,0,6,0.0,0.0,1
 1082643,1,Gujarat Lions,DR Smith,54,33,7,2,12,163.63636363636363,27.272727272727273,1
@@ -9461,9 +9461,9 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082645,1,Punjab Kings,SE Marsh,10,13,2,0,9,76.92307692307692,15.384615384615385,1
 1082645,1,Punjab Kings,Swapnil Singh,10,17,0,0,8,58.8235294117647,0.0,1
 1082645,1,Punjab Kings,WP Saha,13,17,0,1,9,76.47058823529412,5.882352941176471,1
-1082645,2,Rising Pune Supergiant,AM Rahane,34,34,1,1,11,100.0,5.882352941176471,0
-1082645,2,Rising Pune Supergiant,RA Tripathi,28,20,4,1,10,140.0,25.0,1
-1082645,2,Rising Pune Supergiant,SPD Smith,15,18,0,0,4,83.33333333333333,0.0,0
+1082645,2,Rising Pune Supergiants,AM Rahane,34,34,1,1,11,100.0,5.882352941176471,0
+1082645,2,Rising Pune Supergiants,RA Tripathi,28,20,4,1,10,140.0,25.0,1
+1082645,2,Rising Pune Supergiants,SPD Smith,15,18,0,0,4,83.33333333333333,0.0,0
 1082646,1,Royal Challengers Bengaluru,CH Gayle,48,38,3,3,14,126.3157894736842,15.789473684210526,1
 1082646,1,Royal Challengers Bengaluru,KM Jadhav,12,9,0,1,3,133.33333333333334,11.11111111111111,1
 1082646,1,Royal Challengers Bengaluru,P Negi,13,5,3,0,1,260.0,60.0,0
@@ -9483,11 +9483,11 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082646,2,Delhi Capitals,SS Iyer,32,30,2,1,12,106.66666666666667,10.0,1
 1082646,2,Delhi Capitals,SV Samson,0,2,0,0,2,0.0,0.0,1
 1082646,2,Delhi Capitals,Z Khan,1,1,0,0,0,100.0,0.0,0
-1082647,1,Rising Pune Supergiant,AM Rahane,56,43,5,1,12,130.2325581395349,13.953488372093023,1
-1082647,1,Rising Pune Supergiant,MK Tiwary,58,48,4,2,16,120.83333333333333,12.5,1
-1082647,1,Rising Pune Supergiant,MS Dhoni,40,26,0,5,12,153.84615384615384,19.23076923076923,0
-1082647,1,Rising Pune Supergiant,RA Tripathi,0,2,0,0,2,0.0,0.0,1
-1082647,1,Rising Pune Supergiant,SPD Smith,1,2,0,0,1,50.0,0.0,1
+1082647,1,Rising Pune Supergiants,AM Rahane,56,43,5,1,12,130.2325581395349,13.953488372093023,1
+1082647,1,Rising Pune Supergiants,MK Tiwary,58,48,4,2,16,120.83333333333333,12.5,1
+1082647,1,Rising Pune Supergiants,MS Dhoni,40,26,0,5,12,153.84615384615384,19.23076923076923,0
+1082647,1,Rising Pune Supergiants,RA Tripathi,0,2,0,0,2,0.0,0.0,1
+1082647,1,Rising Pune Supergiants,SPD Smith,1,2,0,0,1,50.0,0.0,1
 1082647,2,Mumbai Indians,AT Rayudu,0,3,0,0,3,0.0,0.0,1
 1082647,2,Mumbai Indians,HH Pandya,14,10,1,1,4,140.0,20.0,1
 1082647,2,Mumbai Indians,JJ Bumrah,16,11,0,1,2,145.45454545454547,9.090909090909092,0
@@ -9538,13 +9538,13 @@ match_id,innings,batting_team,batter,runs,balls_faced,fours,sixes,dot_balls,stri
 1082650,1,Mumbai Indians,MG Johnson,13,14,0,1,6,92.85714285714286,7.142857142857143,0
 1082650,1,Mumbai Indians,PA Patel,4,6,0,0,3,66.66666666666667,0.0,1
 1082650,1,Mumbai Indians,RG Sharma,24,22,4,0,10,109.0909090909091,18.181818181818183,1
-1082650,2,Rising Pune Supergiant,AM Rahane,44,38,5,0,14,115.78947368421052,13.157894736842104,1
-1082650,2,Rising Pune Supergiant,DT Christian,4,2,0,0,0,200.0,0.0,0
-1082650,2,Rising Pune Supergiant,MK Tiwary,7,8,1,0,4,87.5,12.5,1
-1082650,2,Rising Pune Supergiant,MS Dhoni,10,13,1,0,6,76.92307692307692,7.6923076923076925,1
-1082650,2,Rising Pune Supergiant,RA Tripathi,3,8,0,0,5,37.5,0.0,1
-1082650,2,Rising Pune Supergiant,SPD Smith,51,50,2,2,19,102.0,8.0,1
-1082650,2,Rising Pune Supergiant,Washington Sundar,0,1,0,0,1,0.0,0.0,1
+1082650,2,Rising Pune Supergiants,AM Rahane,44,38,5,0,14,115.78947368421052,13.157894736842104,1
+1082650,2,Rising Pune Supergiants,DT Christian,4,2,0,0,0,200.0,0.0,0
+1082650,2,Rising Pune Supergiants,MK Tiwary,7,8,1,0,4,87.5,12.5,1
+1082650,2,Rising Pune Supergiants,MS Dhoni,10,13,1,0,6,76.92307692307692,7.6923076923076925,1
+1082650,2,Rising Pune Supergiants,RA Tripathi,3,8,0,0,5,37.5,0.0,1
+1082650,2,Rising Pune Supergiants,SPD Smith,51,50,2,2,19,102.0,8.0,1
+1082650,2,Rising Pune Supergiants,Washington Sundar,0,1,0,0,1,0.0,0.0,1
 1136561,1,Mumbai Indians,E Lewis,0,2,0,0,2,0.0,0.0,1
 1136561,1,Mumbai Indians,HH Pandya,22,20,2,0,5,110.0,10.0,0
 1136561,1,Mumbai Indians,Ishan Kishan,40,29,4,1,9,137.93103448275863,17.24137931034483,1
