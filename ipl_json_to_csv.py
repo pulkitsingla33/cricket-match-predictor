@@ -20,6 +20,22 @@ from pathlib import Path
 
 
 # ─────────────────────────────────────────────
+# TEAM NAME NORMALIZATION
+# ─────────────────────────────────────────────
+
+TEAM_NAME_MAPPING = {
+    "Kings XI Punjab": "Punjab Kings",
+    "Delhi Daredevils": "Delhi Capitals",
+}
+
+def normalize_team_name(team_name: str) -> str:
+    """Normalize team name to current/canonical name."""
+    if team_name is None:
+        return None
+    return TEAM_NAME_MAPPING.get(team_name, team_name)
+
+
+# ─────────────────────────────────────────────
 # MATCH-LEVEL EXTRACTION
 # ─────────────────────────────────────────────
 
@@ -67,17 +83,17 @@ def extract_match_row(match_id: str, data: dict) -> dict:
         "date":                dates[0] if dates else None,
         "venue":               info.get("venue"),
         "city":                info.get("city"),
-        "team1":               teams[0] if len(teams) > 0 else None,
-        "team2":               teams[1] if len(teams) > 1 else None,
-        "toss_winner":         toss.get("winner"),
+        "team1":               normalize_team_name(teams[0] if len(teams) > 0 else None),
+        "team2":               normalize_team_name(teams[1] if len(teams) > 1 else None),
+        "toss_winner":         normalize_team_name(toss.get("winner")),
         "toss_decision":       toss.get("decision"),
-        "innings1_team":       inn_scores.get(1, {}).get("team"),
+        "innings1_team":       normalize_team_name(inn_scores.get(1, {}).get("team")),
         "innings1_runs":       inn_scores.get(1, {}).get("runs"),
         "innings1_wickets":    inn_scores.get(1, {}).get("wickets"),
-        "innings2_team":       inn_scores.get(2, {}).get("team"),
+        "innings2_team":       normalize_team_name(inn_scores.get(2, {}).get("team")),
         "innings2_runs":       inn_scores.get(2, {}).get("runs"),
         "innings2_wickets":    inn_scores.get(2, {}).get("wickets"),
-        "winner":              winner,
+        "winner":              normalize_team_name(winner),
         "win_by_runs":         win_by_runs,
         "win_by_wickets":      win_by_wickets,
         "player_of_match":     player_of_match,
@@ -106,9 +122,9 @@ def extract_delivery_rows(match_id: str, data: dict) -> list[dict]:
     innings_data = data.get("innings", [])
 
     for inn_idx, inn in enumerate(innings_data, start=1):
-        batting_team  = inn.get("team")
+        batting_team  = normalize_team_name(inn.get("team"))
         info_teams    = data.get("info", {}).get("teams", [])
-        bowling_team  = next((t for t in info_teams if t != batting_team), None)
+        bowling_team  = next((normalize_team_name(t) for t in info_teams if t != inn.get("team")), None)
 
         # Powerplay overs lookup
         powerplays = inn.get("powerplays", [])
