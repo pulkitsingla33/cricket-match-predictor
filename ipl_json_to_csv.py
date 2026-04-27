@@ -26,6 +26,7 @@ from pathlib import Path
 TEAM_NAME_MAPPING = {
     "Kings XI Punjab": "Punjab Kings",
     "Delhi Daredevils": "Delhi Capitals",
+    "Royal Challengers Bangalore": "Royal Challengers Bengaluru",
 }
 
 def normalize_team_name(team_name: str) -> str:
