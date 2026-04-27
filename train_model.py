@@ -49,7 +49,7 @@ def prepare_player_features(batting_df, bowling_df, matches_df):
 
 def train_ensemble_model():
     # 1. Load Data
-    data_path = Path("/home/ayush/Documents/SEM_2/SES/cricket-match-predictor")
+    data_path = Path(__file__).parent
     df = pd.read_csv(data_path / "features_match_level.csv")
     batting_df = pd.read_csv(data_path / "features_batting.csv")
     bowling_df = pd.read_csv(data_path / "features_bowling.csv")
