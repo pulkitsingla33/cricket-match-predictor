@@ -16,7 +16,7 @@ def load_latest_stats(team1, team2, venue):
     Simulates fetching the latest pre-match stats for the two teams.
     In a real app, this would pull from a live database.
     """
-    data_path = Path("/home/ayush/Documents/SEM_2/SES/cricket-match-predictor/features_match_level.csv")
+    data_path = Path(__file__).parent / "features_match_level.csv"
     df = pd.read_csv(data_path)
     
     # Pre-calculate player strengths (simplified for TUI)
