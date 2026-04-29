@@ -30,6 +30,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import joblib
 from pathlib import Path
+import matplotlib.pyplot as plt
 
 
 def prepare_player_features(batting_df, bowling_df, matches_df):
@@ -231,6 +232,33 @@ def train_score_model():
     print(f"  MAE  : {test_mae:.2f} runs")
     print(f"  RMSE : {test_rmse:.2f} runs")
     print(f"  R2   : {test_r2:.4f}")
+    
+    # ── Plotting ──────────────────────────────────────────
+    print("\nGenerating Regression Diagnostic Plots...")
+    fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+    
+    # 1. Predicted vs Actual
+    axes[0].scatter(y_test, y_pred, alpha=0.5, color='teal')
+    axes[0].plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=2)
+    axes[0].set_xlabel('Actual Runs')
+    axes[0].set_ylabel('Predicted Runs')
+    axes[0].set_title('Predicted vs Actual Runs')
+    
+    # 2. Residual Plot
+    residuals = y_test.values - y_pred
+    axes[1].scatter(y_pred, residuals, alpha=0.5, color='crimson')
+    axes[1].axhline(y=0, color='k', linestyle='--', lw=2)
+    axes[1].set_xlabel('Predicted Runs')
+    axes[1].set_ylabel('Residuals (Actual - Predicted)')
+    axes[1].set_title('Residuals vs Predicted')
+    
+    plt.tight_layout()
+    plots_dir = data_path / "plots"
+    plots_dir.mkdir(exist_ok=True)
+    plot_path = plots_dir / "score_model_regression.png"
+    plt.savefig(plot_path)
+    plt.close()
+    print(f"Regression plots saved to {plot_path}")
 
     # Feature importance (from Random Forest)
     print("\n" + "-" * 55)

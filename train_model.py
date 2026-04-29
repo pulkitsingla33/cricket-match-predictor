@@ -8,7 +8,8 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.metrics import classification_report, accuracy_score, roc_curve, auc
+import matplotlib.pyplot as plt
 import joblib
 from pathlib import Path
 
@@ -197,6 +198,29 @@ def train_ensemble_model():
     print(f"Accuracy: {test_accuracy:.4f}")
     print("\nClassification Report:")
     print(classification_report(y_test, y_pred))
+    
+    # 11.5 Generate ROC/AUC
+    print("\nGenerating ROC/AUC graph...")
+    y_prob = bundle_pipeline.predict_proba(X_test)[:, 1]
+    fpr, tpr, _ = roc_curve(y_test, y_prob)
+    roc_auc = auc(fpr, tpr)
+    
+    plt.figure(figsize=(8, 6))
+    plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (AUC = {roc_auc:.4f})')
+    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver Operating Characteristic - Win Prediction')
+    plt.legend(loc="lower right")
+    
+    plots_dir = data_path / "plots"
+    plots_dir.mkdir(exist_ok=True)
+    plot_path = plots_dir / "win_model_roc.png"
+    plt.savefig(plot_path)
+    plt.close()
+    print(f"ROC curve saved to {plot_path}")
     
     # 12. Feature Importance Analysis
     print("\n" + "─"*55)
