@@ -14,6 +14,7 @@ Output: ipl_score_predictor.joblib
 
 import pandas as pd
 import numpy as np
+import time
 from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import (
     RandomForestRegressor,
@@ -84,6 +85,7 @@ def prepare_player_features(batting_df, bowling_df, matches_df):
 
 
 def train_score_model():
+    training_start = time.perf_counter()
     data_path = Path(__file__).parent
     df = pd.read_csv(data_path / "features_match_level.csv")
     batting_df = pd.read_csv(data_path / "features_batting.csv")
@@ -270,6 +272,9 @@ def train_score_model():
     joblib.dump(metadata, data_path / "ipl_score_predictor_meta.joblib")
     print(f"Metadata saved to ipl_score_predictor_meta.joblib")
 
+    training_end = time.perf_counter()
+    total_seconds = training_end - training_start
+    print(f"Training completed in {total_seconds:.2f} seconds.")
 
 if __name__ == "__main__":
     train_score_model()

@@ -32,6 +32,30 @@ TEAM_HOME_CITIES = {
     "Gujarat Lions": ["Rajkot", "Ahmedabad"],
 }
 
+def display_numbered_menu(title, options, columns=2):
+    """Prints a numbered menu for a list of options."""
+    table = Table(show_header=False, box=None, pad_edge=False)
+    for _ in range(columns):
+        table.add_column()
+    for i in range(0, len(options), columns):
+        row_items = []
+        for j, option in enumerate(options[i:i + columns], start=i + 1):
+            row_items.append(f"[bold yellow]{j:2d}[/bold yellow] {option}")
+        while len(row_items) < columns:
+            row_items.append("")
+        table.add_row(*row_items)
+    console.print(Panel(table, title=title, expand=False, border_style="green"))
+
+
+def select_numbered_option(prompt_text, options):
+    """Prompts the user to choose an option by its number."""
+    while True:
+        choice = IntPrompt.ask(prompt_text)
+        if 1 <= choice <= len(options):
+            return options[choice - 1]
+        rprint(f"[red]Invalid selection:[/red] enter a number between 1 and {len(options)}.")
+
+
 def load_latest_stats(team1, team2, venue):
     """
     Fetches the latest pre-match stats for the two teams.
@@ -218,36 +242,25 @@ def main():
     teams = sorted(df['team1'].unique().tolist())
     venues = sorted(df['venue'].unique().tolist())
     
-    rprint("[bold cyan]Available Teams:[/bold cyan]")
-    # Print teams in columns
-    table = Table(show_header=False, box=None)
-    for i in range(0, len(teams), 2):
-        row = teams[i:i+2]
-        table.add_row(*row)
-    console.print(table)
-
-    rprint("[bold cyan]Available Venues:[/bold cyan]")
-    # Print venues in columns
-    table = Table(show_header=False, box=None)
-    for i in range(0, len(venues), 2):
-        row = venues[i:i+2]
-        table.add_row(*row)
-    console.print(table)
+    display_numbered_menu("Available Teams", teams)
+    display_numbered_menu("Available Venues", venues)
     
     # ── Inputs ────────────────────────────────────────────
-    t1 = Prompt.ask("\nChoose [bold red]Team 1[/bold red]", choices=teams)
-    t2 = Prompt.ask("Choose [bold blue]Team 2[/bold blue]", choices=[t for t in teams if t != t1])
-    venue = Prompt.ask("Select [bold yellow]Venue[/bold yellow]", choices=venues, default=venues[0])
+    t1 = select_numbered_option("Choose [bold red]Team 1[/bold red] (enter number)", teams)
+    remaining_teams = [team for team in teams if team != t1]
+    display_numbered_menu(f"Teams excluding {t1}", remaining_teams)
+    t2 = select_numbered_option("Choose [bold blue]Team 2[/bold blue] (enter number)", remaining_teams)
+    display_numbered_menu("Available Venues", venues)
+    venue = select_numbered_option("Choose [bold yellow]Venue[/bold yellow] (enter number)", venues)
     
     # Ask who bats first
-    bat_first = Prompt.ask(
-        "\nWho [bold green]bats first[/bold green]?",
-        choices=[t1, t2],
-        default=t1
+    bat_first = select_numbered_option(
+        f"\nWho [bold green]bats first[/bold green]? (enter number)", [t1, t2]
     )
     bowl_first = t2 if bat_first == t1 else t1
     
     # ── Predictions ───────────────────────────────────────
+    prediction_start = time.perf_counter()
     with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), transient=True) as progress:
         progress.add_task(description=f"Analyzing {t1} vs {t2} at {venue}...", total=None)
         input_data, t1_stats, t2_stats = load_latest_stats(t1, t2, venue)
@@ -372,8 +385,9 @@ def main():
     
     console.print(par_table)
     
-    # Final note
-    rprint(f"\n [dim]Prediction completed using Stacking Ensemble models (RF + HGB + ET).[/dim]")
+    prediction_end = time.perf_counter()
+    elapsed_seconds = prediction_end - prediction_start
+    rprint(f"\n[dim]Prediction completed in [bold]{elapsed_seconds:.2f} seconds[/bold] using Stacking Ensemble models (RF + HGB + ET).[/dim]")
 
 if __name__ == "__main__":
     main()

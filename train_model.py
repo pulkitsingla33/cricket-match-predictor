@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import time
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import RandomForestClassifier, HistGradientBoostingClassifier, ExtraTreesClassifier, StackingClassifier
 from sklearn.linear_model import LogisticRegression
@@ -62,6 +63,7 @@ def prepare_player_features(batting_df, bowling_df, matches_df):
     return match_batting, match_bowling
 
 def train_ensemble_model():
+    training_start = time.perf_counter()
     # 1. Load Data
     data_path = Path(__file__).parent
     df = pd.read_csv(data_path / "features_match_level.csv")
@@ -226,6 +228,10 @@ def train_ensemble_model():
     # 14. Save Model
     joblib.dump(bundle_pipeline, "ipl_ensemble_predictor.joblib")
     print(f"\nModel saved to ipl_ensemble_predictor.joblib")
+
+    training_end = time.perf_counter()
+    total_seconds = training_end - training_start
+    print(f"Training completed in {total_seconds:.2f} seconds.")
 
 if __name__ == "__main__":
     train_ensemble_model()
