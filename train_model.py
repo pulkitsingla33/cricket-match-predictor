@@ -122,13 +122,15 @@ def train_ensemble_model():
         'form_diff', 'batting_sr_diff', 'batting_avg_diff',
         'bowling_econ_diff', 'bowling_wkts_diff',
         'venue_wr_diff', 'pp_runs_diff', 'death_wkts_diff',
+        # Era / rule-change flag (IPL 2023+: 12-player squads, higher scoring)
+        'is_impact_player_era',
     ]
     
     X = df[cat_features + num_features]
     y = df['team1_won']
     
     # 6. Chronological Split
-    # Training on matches before 2023, testing on 2023-2024
+    # Training on matches before 2023, testing on 2023 onwards
     train_idx = df['date'] < '2023-01-01'
     X_train, X_test = X[train_idx], X[~train_idx]
     y_train, y_test = y[train_idx], y[~train_idx]
@@ -194,7 +196,7 @@ def train_ensemble_model():
     # 11. Evaluate
     y_pred = bundle_pipeline.predict(X_test)
     test_accuracy = accuracy_score(y_test, y_pred)
-    print("\nModel Performance on Test Set (2023-2024 Seasons):")
+    print("\nModel Performance on Test Set (2023+ Impact Player Era):")
     print(f"Accuracy: {test_accuracy:.4f}")
     print("\nClassification Report:")
     print(classification_report(y_test, y_pred))
@@ -223,9 +225,9 @@ def train_ensemble_model():
     print(f"ROC curve saved to {plot_path}")
     
     # 12. Feature Importance Analysis
-    print("\n" + "─"*55)
+    print("\n" + "-"*55)
     print("FEATURE IMPORTANCE (from Random Forest base learner)")
-    print("─"*55)
+    print("-"*55)
     # Get feature names after preprocessing
     preprocessor_fitted = bundle_pipeline.named_steps['preprocessor']
     num_names = num_features

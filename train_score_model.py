@@ -151,6 +151,8 @@ def train_score_model():
         'toss_bat_first',
         'is_home_team1', 'is_home_team2',
         'season_progress',
+        # Era / rule-change flag (IPL 2023+: 12-player squads, higher scoring)
+        'is_impact_player_era',
     ]
 
     X = df[cat_features + num_features]
@@ -291,12 +293,25 @@ def train_score_model():
     joblib.dump(pipeline, model_path)
     print(f"\nModel saved to {model_path.name}")
 
-    # Also save the residual std for confidence intervals in prediction
+    # Save metadata including era-aware residual stats for confidence intervals
+    # Since chronological split puts all 2023+ (impact-era) matches in test set,
+    # we store the mean bias (systematic under/over-prediction) for correction in the TUI.
+    test_era = df.loc[~train_idx, 'is_impact_player_era'].values
+    residuals_post = (y_test.values - y_pred)[test_era == 1] if (test_era == 1).any() else residuals
+    residuals_pre  = (y_test.values - y_pred)[test_era == 0] if (test_era == 0).any() else np.array([])
+
     metadata = {
         'residual_std': float(residuals.std()),
+        'residual_std_impact_era': float(residuals_post.std()) if len(residuals_post) > 0 else float(residuals.std()),
+        'residual_std_pre_impact': float(residuals_pre.std()) if len(residuals_pre) > 0 else float(residuals.std()),
+        # Mean bias: positive = model underpredicts; used in TUI to correct predictions for impact era
+        'impact_era_bias': float(residuals_post.mean()) if len(residuals_post) > 0 else 0.0,
         'test_mae': float(test_mae),
         'cv_mae': float(cv_mae),
+        'impact_era_avg_score': float(df[df['is_impact_player_era'] == 1]['innings1_runs'].mean()),
+        'pre_impact_avg_score': float(df[df['is_impact_player_era'] == 0]['innings1_runs'].mean()),
     }
+    print(f"\n  Impact era bias correction: {metadata['impact_era_bias']:+.2f} runs")
     joblib.dump(metadata, data_path / "ipl_score_predictor_meta.joblib")
     print(f"Metadata saved to ipl_score_predictor_meta.joblib")
 

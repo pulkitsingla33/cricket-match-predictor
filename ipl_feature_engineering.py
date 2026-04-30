@@ -317,6 +317,10 @@ def build_match_features(matches: pd.DataFrame, deliveries: pd.DataFrame) -> pd.
     season_sizes = df.groupby("season")["match_id"].transform("count")
     df["season_progress"] = df["season_match_number"] / season_sizes  # 0→1 through season
 
+    # Impact Player era flag (IPL 2023 onwards — squads of 12, higher scoring)
+    # This structural rule change significantly inflates first-innings totals (~+25 runs avg).
+    df["is_impact_player_era"] = (df["season_year"] >= 2023).astype(int)
+
     return df
 
 # BATTER FEATURES (per match)
@@ -401,9 +405,9 @@ def main():
     bowling_out = out / "features_bowling.csv"
     bowling_features.to_csv(bowling_out, index=False)
 
-    print("\n" + "─"*55)
+    print("\n" + "-"*55)
     print("MATCH-LEVEL FEATURE SUMMARY")
-    print("─"*55)
+    print("-"*55)
     feature_groups = {
         "Target / Result":     ["target","score_diff","run_rate_inn1","run_rate_inn2",
                                  "team1_won","win_method"],
@@ -421,6 +425,7 @@ def main():
         "Avg Death Wickets":   ["team1_avg_death_wkts","team2_avg_death_wkts"],
         "Home Advantage":      ["is_home_team1","is_home_team2"],
         "Season Progress":     ["season_match_number","season_progress"],
+        "Impact Player Era":   ["is_impact_player_era"],
     }
     for group, cols in feature_groups.items():
         present = [c for c in cols if c in match_features.columns]

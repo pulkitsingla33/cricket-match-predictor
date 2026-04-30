@@ -136,6 +136,7 @@ def load_latest_stats(team1, team2, venue):
     is_home_t2 = int(city in TEAM_HOME_CITIES.get(team2, [])) if city else 0
     
     # Construct feature row matching the model's expected features
+    # All new matches use the Impact Player rule (IPL 2023+: 12-player squads)
     features = {
         'team1': team1,
         'team2': team2,
@@ -177,6 +178,8 @@ def load_latest_stats(team1, team2, venue):
         'venue_wr_diff': t1_stats['venue_wr'] - t2_stats['venue_wr'],
         'pp_runs_diff': t1_stats['avg_pp_runs'] - t2_stats['avg_pp_runs'],
         'death_wkts_diff': t1_stats['avg_death_wkts'] - t2_stats['avg_death_wkts'],
+        # Impact Player era: all current IPL matches use 12-player squads (IPL 2023+)
+        'is_impact_player_era': 1,
     }
     
     return pd.DataFrame([features]), t1_stats, t2_stats
@@ -187,6 +190,7 @@ def build_score_features(batting_team, bowling_team, venue, t_bat_stats, t_bowl_
     """
     Build the feature row for the score prediction model.
     Features must match train_score_model.py's expected columns.
+    All predictions are assumed to be for the Impact Player era (IPL 2023+).
     """
     features = {
         'innings1_team': batting_team,
@@ -210,6 +214,8 @@ def build_score_features(batting_team, bowling_team, venue, t_bat_stats, t_bowl_
         'is_home_team1': is_home_bat,
         'is_home_team2': is_home_bowl,
         'season_progress': 0.5,
+        # Impact Player era: all current IPL matches use 12-player squads (IPL 2023+)
+        'is_impact_player_era': 1,
     }
     return pd.DataFrame([features])
 
@@ -291,7 +297,16 @@ def main():
                 match_features_df=df,
             )
             predicted_score = score_model.predict(score_features)[0]
-            residual_std = score_meta.get('residual_std', 20.0) if score_meta else 20.0
+            # Apply impact-player-era bias correction:
+            # The model trains on pre-2023 data and tends to underpredict higher post-2023 scores.
+            # We add the mean residual (bias) measured on the 2023+ test set.
+            if score_meta:
+                bias = score_meta.get('impact_era_bias', 0.0)
+                predicted_score += bias
+                residual_std = score_meta.get('residual_std_impact_era',
+                                              score_meta.get('residual_std', 20.0))
+            else:
+                residual_std = 20.0
             score_range = (int(round(predicted_score - residual_std)), 
                           int(round(predicted_score + residual_std)))
         
